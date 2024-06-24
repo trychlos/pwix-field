@@ -115,18 +115,22 @@ It should be instanciated by the caller with a list of fields definitions as pla
         {
             name: '_id',
             type: String,
+            // not considered in the tabular displays
             dt_tabular: false
         },
         {
             name: 'emails',
             type: Array,
             optional: true,
+            // not visible in the tabular displays
             dt_visible: false
         },
         {
             name: 'emails.$',
             type: Object,
             optional: true,
+            // not considered in the tabular displays
+            //  really useless as emails is subscribed to anyway
             dt_tabular: false
         },
         {
@@ -134,9 +138,12 @@ It should be instanciated by the caller with a list of fields definitions as pla
             type: String,
             regEx: SimpleSchema.RegEx.Email,
             dt_data: false,
+            // the title of the header
             dt_title: pwixI18n.label( I18N, 'list.email_address_th' ),
             dt_template: Meteor.isClient && Template.email_address,
+            // check function
             form_check: AccountsManager.check?.emailAddress,
+            // if the email address is optional ?
             form_checkType: 'optional'
         },
         {
