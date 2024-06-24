@@ -8,6 +8,7 @@
 
     - Setup/extends the templateContext with the field specification, bumping minor candidate version number
     - Provides the data type to the tabular output
+    - Accept an array at Field.Set instanciation
 
 ### 1.1.0
 

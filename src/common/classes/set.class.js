@@ -37,16 +37,20 @@ export class Set {
      * Constructor
      * @locus Everywhere
      * @summary Instanciates a new Set instance
-     * @param {List<Object>} list a list of field definitions
+     * @param {List<Object>|Array<Object>} list a list of field definitions
      *  The constructor is expected to be called as `new Field.Set( {def_1}, { def_2 }, { def_3 }, ... );`
      *  which happens to be a list of plain javascript objects whom we do not know the count of arguments.
      * @returns {Set} this instance
      */
     constructor( list ){
-        assert( list && _.isObject( list ), 'argument must be an ordered list of plain javascript Object\'s' );
+        assert( list && ( _.isObject( list ) || _.isArray( list )), 'argument must be an array or an ordered list of plain javascript Object\'s' );
 
         // keep instanciation args
-        this.#args = [ ...arguments ];
+        if( _.isArray( list )){
+            this.#args = list;
+        } else {
+            this.#args = [ ...arguments ];
+        }
 
         // instanciate a Def object for each field description
         this.#set = [];

@@ -122,7 +122,7 @@ All `Forms.Checker` keys must be passed with a `form_` prefix.
 
 An ordered collection of `Field.Def` objects.
 
-It should be instanciated by the caller with a list of fields definitions as plain javascript objects.
+It should be instanciated by the caller with a list or an array of fields definitions as plain javascript objects.
 
 ```js
     app.fieldsSet = new Field.Set(
