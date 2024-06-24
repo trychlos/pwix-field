@@ -10,7 +10,9 @@ A package to manage field definitions in Meteor. You define here at once all spe
 
 - forms input, with `pwix:forms`
 
-- getter, setter and both client and server sides checks.
+- getter, setter and both client and server sides checks
+
+- help lines.
 
 ## Installation
 
@@ -96,13 +98,25 @@ All `Forms.Checker` keys must be passed with a `form_` prefix.
 
     Returns a columns specification suitable to [Forms](https://github.com/trychlos/pwix-forms/) setup.
 
+    A field which have a `form = false` key/value pair is ignored when building the schema.
+
+- `Field.Def.toHelp()`
+
+    Extract and returns the help data, which may be an empty object.
+
+    A field which have a `help = false` key/value pair is ignored when building the help data.
+
 - `Field.Def.toTabular()`
 
     Returns a column definition suitable to [Datatable](https://datatables.net/) initialization.
 
+    A field which have a `dt_tabular = false` key/value pair is ignored when building the tabular definition.
+
 - `Field.Def.toSchema()`
 
     Returns a field definition suitable to instanciate a [SimpleSchema](https://github.com/Meteor-Community-Packages/meteor-simple-schema) .
+
+    A field which have a `schema = false` key/value pair is ignored when building the schema.
 
 ##### `Field.Set`
 
@@ -193,13 +207,17 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     Returns an ordered list of columns definitions suitable to [Forms](https://github.com/trychlos/pwix-forms/) setup.
 
+- `Field.Set.toHelp()`
+
+    Extract and returns a keyed object with the help data.
+
 - `Field.Set.toTabular()`
 
     Returns an ordered list of columns definitions suitable to [Datatable](https://datatables.net/) initialization.
 
 - `Field.Set.toSchema()`
 
-    Returns a field definition suitable to instanciate a [SimpleSchema](https://github.com/Meteor-Community-Packages/meteor-simple-schema) .
+    Returns a field definition suitable to instanciate a [SimpleSchema](https://github.com/Meteor-Community-Packages/meteor-simple-schema).
 
 ## Configuration
 

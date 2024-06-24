@@ -2,17 +2,17 @@
 
 ## ChangeLog
 
-### 1.0.2-rc
+### 1.1.0-rc
 
-    Release date: 
+    Release date:
 
-    - 
+    - Introduce help lines, bumping minor candidate version number
 
 ### 1.0.1
 
     Release date: 2024- 6-24
 
-    - 
+    - Update README
 
 ### 1.0.0
 

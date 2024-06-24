@@ -94,6 +94,21 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @returns {Object} an object where keys are the name of the fields, and values the help data
+     */
+    toHelp(){
+        let result = {};
+        this.#set.forEach(( def ) => {
+            const res = def.toHelp();
+            if( res && Object.keys( res ).length > 0 ){
+                result[def.name()] = res;
+            }
+        })
+        return result;
+    };
+
+    /**
+     * @locus Everywhere
      * @returns {Object} the SimpleSchema definition as an object where keys are the name of the fields, and values the SimpleSchema definition
      */
     toSchema(){

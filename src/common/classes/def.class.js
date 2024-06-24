@@ -22,6 +22,8 @@
  * - dt_templateContext: stands for `aldeed:tabular` tmplContext
  *
  * 'form_'-prefixed keys target the input panel (and more specifically `pwix:field` package).
+ *
+ * 'help_'-prefixed keys may host help data for the field, e.g. a short help text, or a full help description.
  */
 
 import _ from 'lodash';
@@ -87,6 +89,35 @@ export class Def {
     }
 
     /*
+     * @returns {Object} the help data, which may be empty
+     */
+    _helpDefinition(){
+        assert( this._helpParticipate(), 'field is not defined to participate to help data' );
+        const def = this._defn();
+        let res = {};
+        Object.keys( def ).forEach(( key ) => {
+            if( key !== 'name' && key !== 'help' ){
+                if( key.startsWith( 'help_' )){
+                    let helpkey = key.substring( 5 );
+                    res[helpkey] = def[key];
+                }
+            }
+        });
+        return res;
+    }
+
+    /*
+     * @returns {Boolean} whether this field definition participates to any sort of help data
+     * @rules
+     *  - must have a set 'name'
+     *  - must not have a 'help=false' key
+     */
+    _helpParticipate(){
+        const def = this._defn();
+        return this.name() && def.help !== false;
+    }
+
+    /*
      * @returns {Object} the SimpleSchema definition
      * @rules
      *  - must participate to the schema
@@ -99,7 +130,7 @@ export class Def {
         let res = {};
         Object.keys( def ).forEach(( key ) => {
             // have to remove keys which are unknowned from SimpleSchema as this later doesn't accept them
-            if( key !== 'name' && key !== 'schema' && !key.startsWith( 'dt_' ) && !key.startsWith( 'form_' )){
+            if( key !== 'name' && key !== 'schema' && !key.startsWith( 'dt_' ) && !key.startsWith( 'form_' ) && !key.startsWith( 'help_' )){
                 res[key] = def[key];
             }
         });
@@ -206,6 +237,18 @@ export class Def {
         let res = null;
         if( this._formParticipate()){
             res = this._formDefinition();
+        }
+        return res;
+    };
+
+    /**
+     * @locus Everywhere
+     * @returns {Object} The 'help_' relative keys and values, which may be empty
+     */
+    toHelp(){
+        let res = null;
+        if( this._helpParticipate()){
+            res = this._helpDefinition();
         }
         return res;
     };
