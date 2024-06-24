@@ -273,6 +273,15 @@ export class Def {
         let res = null;
         if( this._tabularParticipate()){
             res = this._tabularDefinition();
+            if( res.tmplContext ){
+                const fn = res.tmplContext;
+                const self = this;
+                res.tmplContext = function( rowData ){
+                    const o = fn( rowData );
+                    o.field = self;
+                    return o;
+                };
+            }
         }
         return res;
     };

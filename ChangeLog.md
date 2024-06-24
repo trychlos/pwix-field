@@ -2,11 +2,11 @@
 
 ## ChangeLog
 
-### 1.1.1-rc
+### 1.2.0-rc
 
-    Release date: 
+    Release date:
 
-    - 
+    - Extends the templateContext, when provided, with the field specification, bumping minor candidate version number
 
 ### 1.1.0
 
