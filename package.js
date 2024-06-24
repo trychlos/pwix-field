@@ -1,6 +1,6 @@
 Package.describe({
     name: 'pwix:field',
-    version: '1.0.1-rc',
+    version: '1.0.1',
     summary: 'Define common field specifications for Meteor usages',
     git: 'https://github.com/trychlos/pwix-field.git',
     documentation: 'README.md'

@@ -20,4 +20,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Jun. 23rd
+- Last updated on 2024, Jun. 24th
