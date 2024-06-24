@@ -163,6 +163,7 @@ export class Def {
         if( this.name() && def.dt_data !== false ){
             res.data = def.name;
         }
+        // send the dt_ keys to the definition
         Object.keys( def ).forEach(( key ) => {
             if( key !== 'name' && key !== 'dt_data' ){
                 if( key.startsWith( 'dt_' )){
@@ -177,6 +178,16 @@ export class Def {
                 }
             }
         });
+        // complete the datacontext with this Field.Def definition
+        const fn = res.tmplContext;
+        const self = this;
+        res.tmplContext = function( rowData ){
+            const o = fn ? fn( rowData ) : { item: rowData };
+            o.field = self;
+            return o;
+        };
+        // provide the field type to the definition
+        res.dt_type = def.type;
         return res;
     }
 
@@ -273,15 +284,6 @@ export class Def {
         let res = null;
         if( this._tabularParticipate()){
             res = this._tabularDefinition();
-            if( res.tmplContext ){
-                const fn = res.tmplContext;
-                const self = this;
-                res.tmplContext = function( rowData ){
-                    const o = fn( rowData );
-                    o.field = self;
-                    return o;
-                };
-            }
         }
         return res;
     };

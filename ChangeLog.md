@@ -6,7 +6,8 @@
 
     Release date:
 
-    - Extends the templateContext, when provided, with the field specification, bumping minor candidate version number
+    - Setup/extends the templateContext with the field specification, bumping minor candidate version number
+    - Provides the data type to the tabular output
 
 ### 1.1.0
 
