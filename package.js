@@ -30,7 +30,9 @@ function configure( api ){
     api.versionsFrom([ '2.9.0', '3.0-rc.0' ]);
     _use( 'check' );
     _use( 'ecmascript' );
+    _use( 'reactive-var' );
     _use( 'tmeasday:check-npm-versions@1.0.2 || 2.0.0-beta.0', 'server' );
+    _use( 'tracker' );
 }
 
 // NPM dependencies are checked in /src/server/js/check_npms.js

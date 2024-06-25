@@ -42,6 +42,8 @@ This Meteor package is installable with the usual command:
     );
 ```
 
+This package is not tied to a client or server side. We strongly suggest to use it in common code.
+
 ## Provides
 
 ### `Field`
@@ -216,6 +218,10 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     - `fields`: an array of field definitions.
 
+- `Field.Set.names()`
+
+    Returns the array of defined `name`'s.
+
 - `Field.Set.toForm()`
 
     Returns an ordered list of columns definitions suitable to [Forms](https://github.com/trychlos/pwix-forms/) setup.
@@ -255,6 +261,8 @@ Known configuration options are:
 Please note that `Field.configure()` method should be called in the same terms both in client and server sides.
 
 Remind too that Meteor packages are instanciated at application level. They are so only configurable once, or, in other words, only one instance has to be or can be configured. Addtionnal calls to `Field.configure()` will just override the previous one. You have been warned: **only the application should configure a package**.
+
+`Field.configure()` is a reactive data source.
 
 ## NPM peer dependencies
 

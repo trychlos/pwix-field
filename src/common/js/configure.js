@@ -4,7 +4,11 @@
 
 import _ from 'lodash';
 
-Field._conf = {};
+import { ReactiveVar } from 'meteor/reactive-var';
+
+let _conf = {};
+
+Field._conf = new ReactiveVar( _conf );
 
 Field._defaults = {
     verbosity: Field.C.Verbose.CONFIGURE
@@ -18,14 +22,16 @@ Field._defaults = {
  */
 Field.configure = function( o ){
     if( o && _.isObject( o )){
-        _.merge( Field._conf, Field._defaults, o );
+        _.merge( _conf, Field._defaults, o );
+        Field._conf.set( _conf );
         // be verbose if asked for
-        if( Field._conf.verbosity & Field.C.Verbose.CONFIGURE ){
+        if( _conf.verbosity & Field.C.Verbose.CONFIGURE ){
             console.log( 'pwix:field configure() with', o );
         }
     }
     // also acts as a getter
-    return Field._conf;
+    return Field._conf.get();
 }
 
-_.merge( Field._conf, Field._defaults );
+_.merge( _conf, Field._defaults );
+Field._conf.set( _conf );

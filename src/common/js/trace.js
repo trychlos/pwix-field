@@ -3,7 +3,7 @@
  */
 
 _verbose = function( level ){
-    if( Field._conf.verbosity & level ){
+    if( Field.configure().verbosity & level ){
         let args = [ ...arguments ];
         args.shift();
         console.debug( ...args );

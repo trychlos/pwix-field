@@ -136,6 +136,21 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @returns {Array} the defined names
+     */
+    names(){
+        let names = [];
+        this.#set.forEach(( it ) => {
+            const name = it.name();
+            if( name ){
+                names.push( name );
+            }
+        });
+        return names;
+    };
+
+    /**
+     * @locus Everywhere
      * @returns {Object} a Forms specification as an object where keys are the name of the fields, and values the Forms field definition
      */
     toForm(){

@@ -9,6 +9,8 @@
     - Setup/extends the templateContext with the field specification, bumping minor candidate version number
     - Provides the data type to the tabular output
     - Define Field.Set.extend() new method which accepts an array at Field.Set instanciation
+    - Define Field.Set.names() new method which returns defined names
+    - Field.configure() becomes a reactive data source
 
 ### 1.1.0
 
