@@ -4,6 +4,12 @@
 
 Field.C = {
 
+    // where to insert new specifications when extending a Field.Set
+    Insert: {
+        AFTER:       0,
+        BEFORE:      1
+    },
+
     // verbosity levels
     Verbose: {
         NONE: 0,

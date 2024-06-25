@@ -7,8 +7,6 @@
 import _ from 'lodash';
 const assert = require( 'assert' ).strict; // up to nodejs v16.x
 
-import SimpleSchema from 'meteor/aldeed:simple-schema';
-
 import { Def } from './def.class.js';
 
 export class Set {
@@ -28,6 +26,43 @@ export class Set {
     // runtime data
 
     // private methods
+
+    // extend the set with some fields
+    _extend( spec ){
+        assert( spec.where === Field.C.Insert.AFTER || spec.where === Field.C.Insert.BEFORE, 'expect Field.C.Insert.AFTER or Field.C.Insert.BEFORE, found '+spec.where );
+        assert( spec.name && _.isString( spec.name ), 'expect a string, found '+spec.name );
+        assert( spec.fields && _.isArray( spec.fields ), 'expect an array, found '+spec.fields );
+        const index = this._index( spec.name );
+        assert( index >= 0, 'field not found: '+spec.name );
+        let added = [];
+        spec.fields.forEach(( it ) => {
+            added.push( new Def( it ));
+        });
+        // inserting before ?
+        if( spec.where === Field.C.Insert.BEFORE ){
+            this.#set.splice( index, 0, ...added );
+        } else {
+            this.#set.splice( index+1, 0, ...added );
+        }
+    }
+
+    /*
+     * @locus Everywhere
+     * @param {String} name the name of the searched field
+     * @returns {Integer} the index of field in the set array, or -1
+     */
+    _index( name ){
+        let found = -1;
+        for( let i=0 ; i<this.#set.length ; ++i ){
+            const it = this.#set[i];
+            assert( it instanceof Def, 'expects a Def instance' )
+            if( it.name() === name ){
+                found = i;
+                break;
+            }
+        }
+        return found;
+    }
 
     // protected methods
 
@@ -79,6 +114,24 @@ export class Set {
             return found === null;
         });
         return found;
+    };
+
+    /**
+     * @locus Everywhere
+     * @summary Extend the current Set with additional fields
+     * @param {Object|Array} extend the fields definitions to be inserted
+     */
+    extend( extend ){
+        // accept null or an empty object, or an empty array
+        if( !extend || ( _.isObject( extend ) && Object.keys( extend ).length === 0 ) || ( _.isArray( extend ) && extend.length === 0 )){
+            return;
+        }
+        assert( extend && ( _.isObject( extend ) || _.isArray( extend )), 'expect an object or an array of objects' );
+        extend = _.isArray( extend ) ? extend : [ extend ];
+        const self = this;
+        extend.forEach(( it ) => {
+            self._extend( it );
+        });
     };
 
     /**

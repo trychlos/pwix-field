@@ -203,6 +203,19 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     Because the `name` key is optional when defining a field, then not all field's are retrievable by this method.
 
+- `Field.Set.extend( <Array|Object> )`
+
+    Extends the `Field.Set` set with the provided fields definitions, as an object, or an array of objects, where each object has following keys:
+
+    - `where`: where to insert the specifications, can be:
+
+        - `Field.C.Insert.AFTER`
+        - `Field.C.Insert.BEFORE`
+
+    - `name`: the column reference name to be inserted after or before, must be already defined.
+
+    - `fields`: an array of field definitions.
+
 - `Field.Set.toForm()`
 
     Returns an ordered list of columns definitions suitable to [Forms](https://github.com/trychlos/pwix-forms/) setup.
