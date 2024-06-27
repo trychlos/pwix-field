@@ -24,10 +24,7 @@ Field.configure = function( o ){
     if( o && _.isObject( o )){
         _.merge( _conf, Field._defaults, o );
         Field._conf.set( _conf );
-        // be verbose if asked for
-        if( _conf.verbosity & Field.C.Verbose.CONFIGURE ){
-            console.log( 'pwix:field configure() with', o );
-        }
+        _verbose( Field.C.Verbose.CONFIGURE, 'pwix:field configure() with', o );
     }
     // also acts as a getter
     return Field._conf.get();
