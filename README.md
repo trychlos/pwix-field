@@ -64,35 +64,56 @@ A class which provides the ad-hoc definitions for (almost) every use of a field 
 
 - to a `SimpleSchema` collection schema through the `Field.ISchema` interface
 - to a [`Datatable`](https://datatables.net) tabular display
-- to the `Forms.Checker` class provided by `pwix:forms`.
+- to the `Forms.Checker` class provided by `pwix:forms`
+- as a help memento with `help_`-prefixed keys.
 
-A `Field.Def` is instanciated with an object with some specific keys:
+A `Field.Def` is instanciated with an object with some specific keys, depending of the target usage:
 
-- `name`
+- Mongo schema
 
-    optional, the name of the field.
+    All `SimpleSchema` keys can be set in this field definition, and will be passed to the `SimpleSchema()` instanciation.
 
-    When set, defines a field in the collection schema, a column in the tabular display, an input element in the edition panel.
+    Some particular keys are defined and are considered here:
 
-    If not set, then there will NOT be any field defined in the Mongo collection.
+    - `name`
 
-- `dt_tabular`
+        Optional, the name of the field.
 
-    optional, whether to have this field in the columns of a tabular display, defaulting to `true`.
+        Though this field is optional at the `Field.Def` level, it is mandatory to trigger a schema definition. In other words, `Field.Def` definitions are just ignored from schema point of view if no `name` is set.
 
-    The whole field definition is ignored from tabular point of view when `dt_tabular` is false.
+    - `schema`
 
-- `dt_data`
+        When `false`, ignore this `Field.Def` definition from schema point of view **even if a `name` is set**.
 
-    optional, whether to have this field as a data subscription in a tabular display, defaulting to `true` if a `name` is set.
+- Tabular display
 
-    A named field defaults to be subscribed to by a tabular display. This option prevents to have a useless data subscription.
+    Tabular display is managed through [`Datatable`](https://datatables.net).
 
-All `SimpleSchema` keys can be set in this field definition, and will be passed to the `SimpleSchema()` instanciation.
+    The `Field.Def` definitions are used to build the `columns` definition argument at `Tabular.Table` instanciation time. All arguments accepted in this `columns` definition can be provided here, with a `dt_` prefix, plus following keys:
 
-All `Datatables` column options are to be be passed with a `dt_` prefix.
+    - `dt_tabular`
 
-All `Forms.Checker` keys must be passed with a `form_` prefix.
+        Optional, whether to have this field in the columns of a tabular display, defaulting to `true`.
+
+        The whole field definition is ignored from tabular point of view when `dt_tabular` is false.
+
+    - `dt_data`
+
+        Optional, whether to have this field as a data subscription in a tabular display, defaulting to `true` if a `name` is set.
+
+        A named field defaults to be subscribed to by a tabular display. This option prevents to have a useless data subscription.
+
+    - `dt_template`
+
+    - `dt_templateContext`
+
+        Replace the `tmpl` and `tmplContext` defined by `aldeed:tabular` with same mean and usage.
+
+- Forms usage
+
+    All `Forms.Checker` keys must be passed with a `form_` prefix. All fields are considered unless a `form = false` is specified.
+
+    See `pwix:forms` documentation for the list of available keys.
 
 ###### Methods
 
@@ -100,13 +121,27 @@ All `Forms.Checker` keys must be passed with a `form_` prefix.
 
     Returns a columns specification suitable to [Forms](https://github.com/trychlos/pwix-forms/) setup.
 
-    A field which have a `form = false` key/value pair is ignored when building the schema.
+    A field which have a `form = false` key/value pair is ignored when building the fields definition.
+
+    All `Field.Def` definitions are considered when building the forms definition, unless:
+
+    - no `name` is set
+
+    - or a `form = false` key/value pair is specified.
+
+    If none of the two above conditions are met, then the method returns at least an empty object.
 
 - `Field.Def.toHelp()`
 
     Extract and returns the help data, which may be an empty object.
 
-    A field which have a `help = false` key/value pair is ignored when building the help data.
+    All `Field.Def` definitions are considered when building the help data, unless:
+
+    - no `name` is set
+
+    - or a `help = false` key/value pair is specified.
+
+    If none of the two above conditions are met, then the method returns at least an empty object.
 
 - `Field.Def.toTabular()`
 
@@ -116,9 +151,13 @@ All `Forms.Checker` keys must be passed with a `form_` prefix.
 
 - `Field.Def.toSchema()`
 
-    Returns a field definition suitable to instanciate a [SimpleSchema](https://github.com/Meteor-Community-Packages/meteor-simple-schema) .
+    Returns an object with fields definitions suitable to instanciate a [SimpleSchema](https://github.com/Meteor-Community-Packages/meteor-simple-schema).
 
-    A field which have a `schema = false` key/value pair is ignored when building the schema.
+    All `Field.Def` definitions are considered when building a schema, unless:
+
+    - no `name` is set
+
+    - or a `schema = false` key/value pair is specified.
 
 ##### `Field.Set`
 

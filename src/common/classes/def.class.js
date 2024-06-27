@@ -21,7 +21,7 @@
  *
  * - dt_templateContext: stands for `aldeed:tabular` tmplContext
  *
- * 'form_'-prefixed keys target the input panel (and more specifically `pwix:field` package).
+ * 'form_'-prefixed keys target the input panel (and more specifically `pwix:forms` package).
  *
  * 'help_'-prefixed keys may host help data for the field, e.g. a short help text, or a full help description.
  */
