@@ -160,8 +160,9 @@ export class Def {
         const def = this._defn();
         let res = {};
         // we have a 'data' key if we have a field name and not dt_data=false
-        if( this.name() && def.dt_data !== false ){
-            res.data = def.name;
+        //  but a provided dt_data takes the priority
+        if( def.dt_data !== false ){
+            res.data = def.dt_data ? def.dt_data : def.name;
         }
         // send the dt_ keys to the definition
         Object.keys( def ).forEach(( key ) => {
