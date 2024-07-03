@@ -179,15 +179,17 @@ export class Def {
                 }
             }
         });
-        // complete the datacontext with this Field.Def definition
-        const fn = res.tmplContext;
-        const self = this;
-        res.tmplContext = function( rowData ){
-            const o = fn ? fn( rowData ) : { item: rowData };
-            o.field = self;
-            return o;
-        };
-        // provide the field type to the definition
+        // when provided, complete the datacontext with this Field.Def definition
+        if( res.tmpl || res.tmplContext ){
+            const fn = res.tmplContext;
+            const self = this;
+            res.tmplContext = function( rowData ){
+                const o = fn ? fn( rowData ) : { item: rowData };
+                o.field = self;
+                return o;
+            };
+        }
+        // provide the field type (Boolean, etc.) to the definition
         res.dt_type = def.type;
         return res;
     }
