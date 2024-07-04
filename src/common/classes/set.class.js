@@ -32,7 +32,6 @@ export class Set {
         assert( spec.where === Field.C.Insert.AFTER || spec.where === Field.C.Insert.BEFORE, 'expect Field.C.Insert.AFTER or Field.C.Insert.BEFORE, found '+spec.where );
         assert( spec.name && _.isString( spec.name ), 'expect a string, found '+spec.name );
         assert( spec.fields && _.isArray( spec.fields ), 'expect an array, found '+spec.fields );
-        console.debug( this );
         const index = this._index( spec.name );
         assert( index >= 0, 'field not found: '+spec.name );
         let added = [];
@@ -89,13 +88,26 @@ export class Set {
         }
 
         // instanciate a Def object for each field description
+        // when an array is found, iterate inside this array (and recurse)
         this.#set = [];
         const self = this;
         if( this.#args ){
-            this.#args.forEach(( it ) => {
-                console.debug( it, typeof it );
-                self.#set.push( new Def( it ));
-            });
+            const iter = function( array ){
+                if( array ){
+                    array.forEach(( it ) => {
+                        if( it ){
+                            if( _.isArray( it )){
+                                iter( it );
+                            } else if( _.isObject( it )){
+                                self.#set.push( new Def( it ));
+                            } else {
+                                console.warn( 'expect an array of an object, found', it );
+                            }
+                        }
+                    });
+                }
+            };
+            iter( this.#args );
         }
 
         //console.debug( this );

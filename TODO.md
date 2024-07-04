@@ -10,7 +10,6 @@
 
 |   Id | Date       | Description and comment(s) |
 | ---: | :---       | :---                       |
-|    2 | 2024- 6-27 | accept and flat-ize array declarations inside of array declarations |
 |    3 |  |  |
 
 ---
@@ -19,6 +18,8 @@
 |   Id | Date       | Description and comment(s) |
 | ---: | :---       | :---                       |
 |    1 | 2024- 6-27 | accept (and ignore) null or empty declarations |
+|      | 2024- 7- 4 | done |
+|    2 | 2024- 6-27 | accept and flat-ize array declarations inside of array declarations |
 |      | 2024- 7- 4 | done |
 
 ---

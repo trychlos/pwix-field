@@ -233,7 +233,7 @@ export class Def {
         // keep instanciation args
         this.#args = { ...o };
 
-        console.debug( this.name());
+        //console.debug( this.name());
         return this;
     }
 
