@@ -12,6 +12,7 @@
     - Define Field.Set.names() new method which returns defined names
     - Field.configure() becomes a reactive data source
     - Accept dt_data extended definition
+    - Accept and ignore null or empty declarations (todo #1)
 
 ### 1.1.0
 

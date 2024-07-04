@@ -83,7 +83,7 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
     - `schema`
 
-        When `false`, ignore this `Field.Def` definition from schema point of view **even if a `name` is set**.
+        When `false`, ignore this `Field.Def` definition from schema point of view even if a `name` is set.
 
 - Tabular display
 
@@ -111,7 +111,7 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
 - Forms usage
 
-    All `Forms.Checker` keys must be passed with a `form_` prefix. All fields are considered unless a `form = false` is specified.
+    All `Forms.Checker` keys must be passed with a `form_` prefix. All fields are considered unless a `form: false` is specified.
 
     See `pwix:forms` documentation for the list of available keys.
 
@@ -139,7 +139,7 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
     - no `name` is set
 
-    - or a `help = false` key/value pair is specified.
+    - or a `help: false` key/value pair is specified.
 
     If none of the two above conditions are met, then the method returns at least an empty object.
 

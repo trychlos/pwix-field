@@ -227,11 +227,13 @@ export class Def {
      * @returns {Field} this instance
      */
     constructor( o ){
-        assert( o && _.isObject( o ), 'definition must be a plain javascript Object' );
+        assert( !o || _.isObject( o ), 'when set, definition must be a plain javascript Object' );
+        o = o || {};
 
         // keep instanciation args
         this.#args = { ...o };
 
+        console.debug( this.name());
         return this;
     }
 

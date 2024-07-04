@@ -32,6 +32,7 @@ export class Set {
         assert( spec.where === Field.C.Insert.AFTER || spec.where === Field.C.Insert.BEFORE, 'expect Field.C.Insert.AFTER or Field.C.Insert.BEFORE, found '+spec.where );
         assert( spec.name && _.isString( spec.name ), 'expect a string, found '+spec.name );
         assert( spec.fields && _.isArray( spec.fields ), 'expect an array, found '+spec.fields );
+        console.debug( this );
         const index = this._index( spec.name );
         assert( index >= 0, 'field not found: '+spec.name );
         let added = [];
@@ -78,21 +79,24 @@ export class Set {
      * @returns {Set} this instance
      */
     constructor( list ){
-        assert( list && ( _.isObject( list ) || _.isArray( list )), 'argument must be an array or an ordered list of plain javascript Object\'s' );
+        assert( !list || _.isObject( list ) || _.isArray( list ), 'when set, argument must be an array or an ordered list of plain javascript Object\'s' );
 
         // keep instanciation args
         if( _.isArray( list )){
             this.#args = list;
-        } else {
+        } else if( list ){
             this.#args = [ ...arguments ];
         }
 
         // instanciate a Def object for each field description
         this.#set = [];
         const self = this;
-        this.#args.forEach(( it ) => {
-            self.#set.push( new Def( it ));
-        })
+        if( this.#args ){
+            this.#args.forEach(( it ) => {
+                console.debug( it, typeof it );
+                self.#set.push( new Def( it ));
+            });
+        }
 
         //console.debug( this );
         return this;
