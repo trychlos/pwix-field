@@ -247,6 +247,14 @@ export class Def {
 
     /**
      * @locus Everywhere
+     * @param { Object } set keys and their values to set on the definition
+     */
+    set( set ){
+        _.merge( this.#args, set );
+    }
+
+    /**
+     * @locus Everywhere
      * @returns {Object} a Forms specification as an object where keys are the name of the fields, and values the Forms field definition
      */
     toForm(){

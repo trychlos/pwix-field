@@ -117,6 +117,10 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
 ###### Methods
 
+- `Field.Def.set( attribs<Object> )`
+
+    Merge a new definition part with the existing one.
+
 - `Field.Def.toForm()`
 
     Returns a columns specification suitable to [Forms](https://github.com/trychlos/pwix-forms/) setup.

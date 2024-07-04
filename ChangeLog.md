@@ -14,6 +14,7 @@
     - Accept dt_data extended definition
     - Accept and ignore null or empty declarations (todo #1)
     - Accept (and flat-ize) array declarations inside of array declarations, and recursively (todo #2)
+    - Define Field.Def.set() new function
 
 ### 1.1.0
 
