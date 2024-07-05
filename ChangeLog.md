@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.2.0-rc
+### 1.2.0
 
-    Release date:
+    Release date: 2024- 7- 5
 
     - Setup/extends the templateContext with the field specification, bumping minor candidate version number
     - Provides the data type to the tabular output
@@ -36,4 +36,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Jun. 24th
+- Last updated on 2024, Jul. 5th
