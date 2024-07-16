@@ -2,11 +2,11 @@
 
 ## ChangeLog
 
-### 1.2.1-rc
+### 1.3.0-rc
 
     Release date: 
 
-    - 
+    - Simplify extension interface, bumping minor candidate version number
 
 ### 1.2.0
 

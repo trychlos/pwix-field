@@ -29,21 +29,40 @@ export class Set {
 
     // extend the set with some fields
     _extend( spec ){
-        assert( spec.where === Field.C.Insert.AFTER || spec.where === Field.C.Insert.BEFORE, 'expect Field.C.Insert.AFTER or Field.C.Insert.BEFORE, found '+spec.where );
-        assert( spec.name && _.isString( spec.name ), 'expect a string, found '+spec.name );
+        assert( !spec.before || _.isString( spec.before ), 'expect a string, found '+spec.before );
         assert( spec.fields && _.isArray( spec.fields ), 'expect an array, found '+spec.fields );
-        const index = this._index( spec.name );
-        assert( index >= 0, 'field not found: '+spec.name );
-        let added = [];
-        spec.fields.forEach(( it ) => {
-            added.push( new Def( it ));
-        });
-        // inserting before ?
-        if( spec.where === Field.C.Insert.BEFORE ){
+        let index = -1;
+        if( spec.before ){
+            index = this._index( spec.before );
+            assert( index >= 0, 'field not found: '+spec.before );
+        }
+        let added = this._fields( spec.fields );
+        // inserting before a named field ?
+        if( index >= 0 ){
             this.#set.splice( index, 0, ...added );
         } else {
-            this.#set.splice( index+1, 0, ...added );
+            this.#set = this.#set.concat( added );
         }
+    }
+
+    // returns an array of new Field.Def's
+    _fields( array ){
+        let result = [];
+        const self = this;
+        if( array ){
+            array.forEach(( it ) => {
+                if( it ){
+                    if( _.isArray( it )){
+                        result = result.concat( self._fields( it ));
+                    } else if( _.isObject( it )){
+                        result.push( new Def( it ));
+                    } else {
+                        console.warn( 'expect an array of an object, found', it );
+                    }
+                }
+            });
+        }
+        return result;
     }
 
     /*
@@ -89,26 +108,7 @@ export class Set {
 
         // instanciate a Def object for each field description
         // when an array is found, iterate inside this array (and recurse)
-        this.#set = [];
-        const self = this;
-        if( this.#args ){
-            const iter = function( array ){
-                if( array ){
-                    array.forEach(( it ) => {
-                        if( it ){
-                            if( _.isArray( it )){
-                                iter( it );
-                            } else if( _.isObject( it )){
-                                self.#set.push( new Def( it ));
-                            } else {
-                                console.warn( 'expect an array of an object, found', it );
-                            }
-                        }
-                    });
-                }
-            };
-            iter( this.#args );
-        }
+        this.#set = this._fields( this.#args );
 
         //console.debug( this );
         return this;
