@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.3.0-rc
+### 1.3.0
 
-    Release date: 
+    Release date: 2024- 7-17
 
     - Simplify extension interface, bumping minor candidate version number
 
@@ -42,4 +42,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Jul. 5th
+- Last updated on 2024, Jul. 17th
