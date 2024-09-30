@@ -210,12 +210,13 @@ export class Def {
      * @returns {Boolean} whether this field definition participates to a tabular display
      * @rules
      *  - must not have a 'dt_tabular=false' key
-     *  - must have either a set 'name' which will be transformed to a 'data' which is used to subscribe to the collection
+     *  - must have either a 'name' which will be transformed to a 'data' which is used to subscribe to the collection and is not an object (doesn't end in '.$')
      *    or any 'dt_'-prefixed key
      */
     _tabularParticipate(){
         const def = this._defn();
-        return def.dt_tabular !== false && ( this.name() || this._tabularHaveKey( def ));
+        const name = this.name();
+        return def.dt_tabular !== false && (( name && !name.match( /\.\$$/ )) || this._tabularHaveKey( def ));
     }
 
     // public data

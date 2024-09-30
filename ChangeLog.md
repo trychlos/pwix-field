@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Do not consider object fields when building tabular display
 
 ### 1.3.0
 
