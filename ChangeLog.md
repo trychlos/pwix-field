@@ -2,11 +2,12 @@
 
 ## ChangeLog
 
-### 1.3.1-rc
+### 1.4.0-rc
 
     Release date: 
 
     - Do not consider object fields when building tabular display
+    - Define new Set.removeByName() method, thus bumping minor candidate version number
 
 ### 1.3.0
 

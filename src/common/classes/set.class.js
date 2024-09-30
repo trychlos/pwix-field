@@ -167,6 +167,22 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @param {String} name the name of the field to be removed
+     * @returns {Set} the new Field.Set
+     */
+    removeByName( name ){
+        let newSet = [];
+        this.#set.forEach(( it ) => {
+            if( it.name() !== name ){
+                newSet.push( it );
+            }
+        });
+        this.#set = newSet;
+        return this.#set;
+    };
+
+    /**
+     * @locus Everywhere
      * @returns {Object} a Forms specification as an object where keys are the name of the fields, and values the Forms field definition
      */
     toForm(){
