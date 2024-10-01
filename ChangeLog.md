@@ -8,6 +8,7 @@
 
     - Do not consider object fields when building tabular display
     - Define new Set.removeByName() method, thus bumping minor candidate version number
+    - Fix configuration overrides
 
 ### 1.3.0
 

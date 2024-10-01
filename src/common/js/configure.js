@@ -22,7 +22,7 @@ Field._defaults = {
  */
 Field.configure = function( o ){
     if( o && _.isObject( o )){
-        _.merge( _conf, Field._defaults, o );
+        _conf = _.merge( Field._defaults, _conf, o );
         Field._conf.set( _conf );
         _verbose( Field.C.Verbose.CONFIGURE, 'pwix:field configure() with', o );
     }
@@ -30,5 +30,5 @@ Field.configure = function( o ){
     return Field._conf.get();
 }
 
-_.merge( _conf, Field._defaults );
+_conf = _.merge( {}, Field._defaults );
 Field._conf.set( _conf );
