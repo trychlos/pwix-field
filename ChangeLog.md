@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.4.0-rc
+### 1.4.0
 
-    Release date: 
+    Release date: 2024-10- 4
 
     - Do not consider object fields when building tabular display
     - Define new Set.removeByName() method, thus bumping minor candidate version number
@@ -50,4 +50,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Jul. 17th
+- Last updated on 2024, Oct. 4th
