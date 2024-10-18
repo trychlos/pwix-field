@@ -2,11 +2,11 @@
 
 ## ChangeLog
 
-### 1.4.1-rc
+### 1.5.0-rc
 
     Release date: 
 
-    - 
+    - Define new Set.indexByName() method, thus bumping minor candidate version number
 
 ### 1.4.0
 

@@ -152,6 +152,22 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @param {String} name the name of the searched field
+     * @returns {Integer} the index of the field in the set, or -1 if not found
+     */
+    indexByName( name ){
+        let found = -1;
+        for( let i=0 ; i<this.#set.length ; ++i ){
+            if( this.#set[i].name() === name ){
+                found = i;
+                break;
+            }
+        };
+        return found;
+    };
+
+    /**
+     * @locus Everywhere
      * @returns {Array} the defined names
      */
     names(){
