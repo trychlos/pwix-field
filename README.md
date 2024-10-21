@@ -91,11 +91,11 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
     The `Field.Def` definitions are used to build the `columns` definition argument at `Tabular.Table` instanciation time. All arguments accepted in this `columns` definition can be provided here, with a `dt_` prefix, plus following keys:
 
-    - `dt_tabular`
+    - `tabular`
 
         Optional, whether to have this field in the columns of a tabular display, defaulting to `true`.
 
-        The whole field definition is ignored from tabular point of view when `dt_tabular` is false.
+        The whole field definition is ignored from tabular point of view when `tabular` is false.
 
     - `dt_data`
 
@@ -151,7 +151,7 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
     Returns a column definition suitable to [Datatable](https://datatables.net/) initialization.
 
-    A field which have a `dt_tabular = false` key/value pair is ignored when building the tabular definition.
+    A field which have a `tabular = false` key/value pair is ignored when building the tabular definition.
 
 - `Field.Def.toSchema()`
 
@@ -175,7 +175,7 @@ It should be instanciated by the caller with a list or an array of fields defini
             name: '_id',
             type: String,
             // not considered in the tabular displays
-            dt_tabular: false
+            tabular: false
         },
         {
             name: 'emails',
@@ -190,7 +190,7 @@ It should be instanciated by the caller with a list or an array of fields defini
             optional: true,
             // not considered in the tabular displays
             //  really useless as emails is subscribed to anyway
-            dt_tabular: false
+            tabular: false
         },
         {
             name: 'emails.$.address',
@@ -228,7 +228,7 @@ It should be instanciated by the caller with a list or an array of fields defini
             type: Object,
             optional: true,
             blackbox: true,
-            dt_tabular: false
+            tabular: false
         },
         Notes.field({
             name: 'userNotes',
@@ -247,6 +247,12 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
     Returns the named `Field.Def` object, or null.
 
     Because the `name` key is optional when defining a field, then not all field's are retrievable by this method.
+
+- `Field.Set.byPrefix( prefix )`
+
+    Returns the list of `Field.Def` objects which contains at least one key which starts by the given prefix, or an empty array.
+
+    `prefix` defaults to abn empty string, which means all fields.
 
 - `Field.Set.extend( <Array|Object> )`
 
@@ -283,6 +289,14 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 The package's behavior can be configured through a call to the `Field.configure()` method, with just a single javascript object argument, which itself should only contains the options you want override.
 
 Known configuration options are:
+
+- `prefixes`
+
+    A list of prefixes used by the application.
+
+    The package needs to know them in order to filter them before sending to schema or tabular or...
+
+    Default to an empty array.
 
 - `verbosity`
 

@@ -7,6 +7,9 @@
     Release date: 
 
     - Define new Set.indexByName() method, thus bumping minor candidate version number
+    - Define new Def.byPrefix(), Def.def() and Set.byPrefix() methods
+    - Add 'prefixes' configuration parameter
+    - dt_tabular parameter is renamed to tabular, for consistency with schema and form
 
 ### 1.4.0
 

@@ -11,6 +11,7 @@ let _conf = {};
 Field._conf = new ReactiveVar( _conf );
 
 Field._defaults = {
+    prefixes: [],
     verbosity: Field.C.Verbose.CONFIGURE
 };
 

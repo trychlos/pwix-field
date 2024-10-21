@@ -134,6 +134,22 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @param {String} prefix the searched for prefix, defaulting to empty which means all
+     * @returns {Array} the fields definitions which includes this prefix
+     */
+    byPrefix( prefix='' ){
+        let res = [];
+        this.#set.forEach(( it ) => {
+            assert( it instanceof Def, 'expects a Def instance' )
+            if( it.byPrefix( prefix )){
+                res.push( it );
+            }
+        });
+        return res;
+    }
+
+    /**
+     * @locus Everywhere
      * @summary Extend the current Set with additional fields
      * @param {Object|Array} extend the fields definitions to be inserted
      */

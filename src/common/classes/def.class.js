@@ -14,7 +14,7 @@
  *
  * 'dt_'-prefixed keys target the tabular display, and accept any [Datatable column definition](https://datatables.net/reference/option/columns), plus:
  *
- * - dt_tabular: when false, let this field be fully ignored in the tabular display
+ * - tabular: when false, let this field be fully ignored in the tabular display
  *   defauts to true
  *
  * - dt_template: stands for `aldeed:tabular` tmpl
@@ -130,8 +130,14 @@ export class Def {
         let res = {};
         Object.keys( def ).forEach(( key ) => {
             // have to remove keys which are unknowned from SimpleSchema as this later doesn't accept them
-            if( key !== 'name' && key !== 'schema' && !key.startsWith( 'dt_' ) && !key.startsWith( 'form_' ) && !key.startsWith( 'help_' )){
-                res[key] = def[key];
+            if( key !== 'name' &&
+                key !== 'schema' &&
+                key !== 'tabular' && !key.startsWith( 'dt_' ) &&
+                key !== 'form' && !key.startsWith( 'form_' ) &&
+                key !== 'help' && !key.startsWith( 'help_' ) &&
+                !Field.fn.haveConfiguredPrefix( key )){
+                
+                    res[key] = def[key];
             }
         });
         return res;
@@ -209,14 +215,14 @@ export class Def {
     /*
      * @returns {Boolean} whether this field definition participates to a tabular display
      * @rules
-     *  - must not have a 'dt_tabular=false' key
+     *  - must not have a 'tabular=false' key
      *  - must have either a 'name' which will be transformed to a 'data' which is used to subscribe to the collection and is not an object (doesn't end in '.$')
      *    or any 'dt_'-prefixed key
      */
     _tabularParticipate(){
         const def = this._defn();
         const name = this.name();
-        return def.dt_tabular !== false && (( name && !name.match( /\.\$$/ )) || this._tabularHaveKey( def ));
+        return def.tabular !== false && (( name && !name.match( /\.\$$/ )) || this._tabularHaveKey( def ));
     }
 
     // public data
@@ -236,6 +242,31 @@ export class Def {
 
         //console.debug( this.name());
         return this;
+    }
+
+    /**
+     * @locus Everywhere
+     * @param {String} prefix the searched for prefix, defaulting to empty which means all
+     * @returns {Object} the full definition if it contains a key which starts with this prefix, or null
+     */
+    byPrefix( prefix='' ){
+        let found = null;
+        const def = this._defn();
+        Object.keys( def ).every(( it ) => {
+            if( !prefix || it.startsWith( prefix )){
+                found = def;
+            }
+            return !found;
+        });
+        return found;
+    }
+
+    /**
+     * @locus Everywhere
+     * @returns {Object} the initial definition as an object
+     */
+    def(){
+        return this._defn();
     }
 
     /**
