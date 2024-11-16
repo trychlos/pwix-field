@@ -264,6 +264,12 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     - `fields`: an array of field definitions.
 
+- `Field.Set.indexByName( name )`
+
+    Returns the index of the named column, or -1.
+
+    Because the `name` key is optional when defining a field, then not all field's are retrievable by this method.
+
 - `Field.Set.names()`
 
     Returns the array of defined `name`'s.
