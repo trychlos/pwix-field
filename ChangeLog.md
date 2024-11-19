@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.5.0-rc
+### 1.5.0
 
-    Release date: 
+    Release date: 2024-11-19
 
     - Define new Set.indexByName() method, thus bumping minor candidate version number
     - Define new Def.byPrefix(), Def.def() and Set.byPrefix() methods
@@ -59,4 +59,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Oct. 4th
+- Last updated on 2024, Nov. 19th
