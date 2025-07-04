@@ -158,7 +158,7 @@ export class Def {
      * @returns {Object} the datatable column definition
      * @rules
      *  - must participate to the schema
-     *  - data subscription is named along the 'field' key, unless dt_data=false
+     *  - data subscription is named along the 'dt_data' key or the 'name' key, unless dt_data=false
      *  - all 'dt_' keys are provided (minus this prefix)
      */
     _tabularDefinition(){
@@ -197,6 +197,7 @@ export class Def {
         }
         // provide the field type (Boolean, etc.) to the definition
         res.dt_type = def.type;
+        //console.debug( 'res', res );
         return res;
     }
 
@@ -216,7 +217,7 @@ export class Def {
      * @returns {Boolean} whether this field definition participates to a tabular display
      * @rules
      *  - must not have a 'tabular=false' key
-     *  - must have either a 'name' which will be transformed to a 'data' which is used to subscribe to the collection and is not an object (doesn't end in '.$')
+     *  - must have either a 'name', which will be transformed to a 'data' which is used to subscribe to the collection, and which must not be an object (doesn't end in '.$')
      *    or any 'dt_'-prefixed key
      */
     _tabularParticipate(){
