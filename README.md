@@ -254,7 +254,7 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     `prefix` defaults to abn empty string, which means all fields.
 
-- `Field.Set.extend( <Array|Object> )`
+- `Field.Set.extend( <Array|Object|Field.Set> [, options<Object> ] )`
 
     Extends the `Field.Set` set with the provided fields definitions, as an object, or an array of objects, where each object has following keys:
 
@@ -263,6 +263,10 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
         If a column name is not specified, then the provided fields definitions are appended to the existing ones.
 
     - `fields`: an array of field definitions.
+
+    When a `Field.Set` is provided as first agument, then optional `options` is considered, following keys being honored:
+
+    - `rename`: an object where each key is the name of a `Field.Def` of the provided `Field.Set`, and each value the new name to be set in the result.
 
 - `Field.Set.indexByName( name )`
 

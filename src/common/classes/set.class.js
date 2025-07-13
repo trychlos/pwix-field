@@ -45,6 +45,20 @@ export class Set {
         }
     }
 
+    // extend the set with another set
+    _extend_with_set( set, opts={} ){
+        assert( set instanceof Field.Set, 'expects an instance of Field.Set, got '+set );
+        this.#set = this.#set || [];
+        opts.rename = opts.rename || {};
+        set.#set.forEach(( it ) => {
+            assert( it instanceof Field.Def, 'expects an instance of Field.Def, got '+it );
+            const name = it.name();
+            const defn = _.cloneDeep( it.def());
+            defn.name = opts.rename[name] || name;
+            this.#set.push( new Def( defn ));
+        });
+    }
+
     // returns an array of new Field.Def's
     _fields( array ){
         let result = [];
@@ -151,19 +165,26 @@ export class Set {
     /**
      * @locus Everywhere
      * @summary Extend the current Set with additional fields
-     * @param {Object|Array} extend the fields definitions to be inserted
+     * @param {Object|Array|Field.Set} extend the fields definitions or the field.set to be inserted
+     * @param {Object} opts an optional options object with following keys:
+     * - rename:
      */
-    extend( extend ){
+    extend( extend, opts={} ){
         // accept null or an empty object, or an empty array
-        if( !extend || ( _.isObject( extend ) && Object.keys( extend ).length === 0 ) || ( _.isArray( extend ) && extend.length === 0 )){
+        if( !extend || ( ! extend instanceof Field.Set && ( _.isObject( extend ) && Object.keys( extend ).length === 0 ) || ( _.isArray( extend ) && extend.length === 0 ))){
             return;
         }
-        assert( extend && ( _.isObject( extend ) || _.isArray( extend )), 'expect an object or an array of objects' );
-        extend = _.isArray( extend ) ? extend : [ extend ];
-        const self = this;
-        extend.forEach(( it ) => {
-            self._extend( it );
-        });
+        assert( extend && ( _.isObject( extend ) || _.isArray( extend ) || extend instanceof Field.Set ), 'expect an object, or an array of objects or an instance of Field.Set, got '+extend );
+        if( extend instanceof Field.Set ){
+            this._extend_with_set( extend, opts );
+
+        } else {
+            extend = _.isArray( extend ) ? extend : [ extend ];
+            const self = this;
+            extend.forEach(( it ) => {
+                self._extend( it );
+            });
+        }
     };
 
     /**
