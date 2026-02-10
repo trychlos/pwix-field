@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.6.0-rc
+### 1.6.0
 
-    Release date: 
+    Release date: 2026- 2-10
 
     - Field.Set.extend() now accepts a Field.Set as argument, thus bumping minor candidate version number
 
@@ -65,4 +65,4 @@
 
 ---
 P. Wieser
-- Last updated on 2024, Nov. 19th
+- Last updated on 2026, Feb. 10th
