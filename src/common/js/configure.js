@@ -7,7 +7,6 @@ import _ from 'lodash';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 let _conf = {};
-
 Field._conf = new ReactiveVar( _conf );
 
 Field._defaults = {
@@ -23,9 +22,20 @@ Field._defaults = {
  */
 Field.configure = function( o ){
     if( o && _.isObject( o )){
-        _conf = _.merge( Field._defaults, _conf, o );
-        Field._conf.set( _conf );
-        _verbose( Field.C.Verbose.CONFIGURE, 'pwix:field configure() with', o );
+        // check that keys exist
+        let built_conf = {};
+        Object.keys( o ).forEach(( it ) => {
+            if( Object.keys( Field._defaults ).includes( it )){
+                built_conf[it] = o[it];
+            } else {
+                console.warn( 'pwix:field configure() ignore unmanaged key \''+it+'\'' );
+            }
+        });
+        if( Object.keys( built_conf ).length ){
+            _conf = _.merge( Field._defaults, _conf, built_conf );
+            Field._conf.set( _conf );
+            _verbose( Field.C.Verbose.CONFIGURE, 'pwix:field configure() with', built_conf );
+        }
     }
     // also acts as a getter
     return Field._conf.get();
