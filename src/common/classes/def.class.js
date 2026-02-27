@@ -197,7 +197,6 @@ export class Def {
         }
         // provide the field type (Boolean, etc.) to the definition
         res.dt_type = def.type;
-        //console.debug( 'res', res );
         return res;
     }
 
@@ -241,7 +240,6 @@ export class Def {
         // keep instanciation args
         this.#args = { ...o };
 
-        //console.debug( this.name());
         return this;
     }
 

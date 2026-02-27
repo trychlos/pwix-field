@@ -7,7 +7,11 @@
 import _ from 'lodash';
 const assert = require( 'assert' ).strict; // up to nodejs v16.x
 
+import { Logger } from 'meteor/pwix:logger';
+
 import { Def } from './def.class.js';
+
+const logger = Logger.get();
 
 export class Set {
 
@@ -71,7 +75,7 @@ export class Set {
                     } else if( _.isObject( it )){
                         result.push( new Def( it ));
                     } else {
-                        console.warn( 'expect an array of an object, found', it );
+                        logger.warn( 'expect an array of an object, found', it );
                     }
                 }
             });
@@ -124,7 +128,6 @@ export class Set {
         // when an array is found, iterate inside this array (and recurse)
         this.#set = this._fields( this.#args );
 
-        //console.debug( this );
         return this;
     }
 
