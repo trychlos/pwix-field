@@ -10,6 +10,7 @@
     - Use pwix:logger universal logger, thus bumping minor candidate version number
     - Def.toTabular() now provides the name to the column if it is set
     - Define new Set.tabularIndexByName() method
+    - Replace assertions with logger.error() + exception throw
 
 ### 1.6.0
 

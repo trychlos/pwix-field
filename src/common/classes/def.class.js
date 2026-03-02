@@ -18,6 +18,8 @@
  *   defauts to true
  *
  * - dt_template: stands for `aldeed:tabular` tmpl
+ *   a name can be provided at definition time, will be replaced by the Blaze Template instance at instanciation time
+ *   so both name (as a string) and actual Template.my_template forms are accepted
  *
  * - dt_templateContext: stands for `aldeed:tabular` tmplContext
  *
@@ -27,7 +29,10 @@
  */
 
 import _ from 'lodash';
-const assert = require( 'assert' ).strict; // up to nodejs v16.x
+
+import { Logger } from 'meteor/pwix:logger';
+
+const logger = Logger.get();
 
 export class Def {
 
@@ -63,7 +68,10 @@ export class Def {
      *  - do not have form=false
      */
     _formDefinition(){
-        assert( this._formParticipate(), 'field is not defined to participate to a Form' );
+        if( !this._formParticipate()){
+            logger.error( '_formDefinition() field is not defined to participate to a Form, and you should have checked that before', 'throwing...' );
+            throw new Error( 'Missing check' );
+        }
         const def = this._defn();
         let res = {};
         Object.keys( def ).forEach(( key ) => {
@@ -92,7 +100,10 @@ export class Def {
      * @returns {Object} the help data, which may be empty
      */
     _helpDefinition(){
-        assert( this._helpParticipate(), 'field is not defined to participate to help data' );
+        if( !this._helpParticipate()){
+            logger.error( '_helpDefinition() field is not defined to participate to help data, and you should have checked that before', 'throwing...' );
+            throw new Error( 'Missing check' );
+        }
         const def = this._defn();
         let res = {};
         Object.keys( def ).forEach(( key ) => {
@@ -125,7 +136,10 @@ export class Def {
      *  - only SimpleSchema must be accepted as SimpleSchema doesn't accept unknown keys
      */
     _schemaDefinition(){
-        assert( this._schemaParticipate(), 'field is not defined to participate to a schema' );
+        if( !this._schemaParticipate()){
+            logger.error( '_schemaDefinition() field is not defined to participate to a schema, and you should have checked that before', 'throwing...' );
+            throw new Error( 'Missing check' );
+        }
         const def = this._defn();
         let res = {};
         Object.keys( def ).forEach(( key ) => {
@@ -162,7 +176,10 @@ export class Def {
      *  - all 'dt_' keys are provided (minus this prefix)
      */
     _tabularDefinition(){
-        assert( this._tabularParticipate(), 'field is not defined to participate to a datatable tabular display' );
+        if( !this._tabularParticipate()){
+            logger.error( '_tabularDefinition() field is not defined to participate to a DataTables tabular display, and you should have checked that before', 'throwing...' );
+            throw new Error( 'Missing check' );
+        }
         const def = this._defn();
         let res = {};
         // we have a 'data' key if we have a field name and not dt_data=false
@@ -237,7 +254,10 @@ export class Def {
      * @returns {Field} this instance
      */
     constructor( o ){
-        assert( !o || _.isObject( o ), 'when set, definition must be a plain javascript Object' );
+        if( o && !_.isObject( o )){
+            logger.error( 'Def.Def() expects an object when set, got', o, 'throwing...' );
+            throw new Error( 'Bad argument: o' );
+        }
         o = o || {};
 
         // keep instanciation args

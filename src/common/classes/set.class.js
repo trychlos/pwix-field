@@ -5,7 +5,6 @@
  */
 
 import _ from 'lodash';
-const assert = require( 'assert' ).strict; // up to nodejs v16.x
 
 import { Logger } from 'meteor/pwix:logger';
 
@@ -32,13 +31,27 @@ export class Set {
     // private methods
 
     // extend the set with some fields
-    _extend( spec ){
-        assert( !spec.before || _.isString( spec.before ), 'expect a string, found '+spec.before );
-        assert( spec.fields && _.isArray( spec.fields ), 'expect an array, found '+spec.fields );
+    // spec is a definition object (not a Field.Def instance)
+    _extend_by_fields( spec ){
+        if( !spec || !_.isObject( spec )){
+            logger.error( '_extend_by_fields() expects \'spec\' be an object, got', spec, 'throwing...' );
+            throw new Error( 'Bad argument: spec' );
+        }
+        if( spec.before && !_.isString( spec.before )){
+            logger.error( '_extend_by_fields() expects \'before\' be an non-empty string when set, got', spec.before, 'throwing...' );
+            throw new Error( 'Bad argument: before' );
+        }
+        if( !spec.fields || !_.isArray( spec.fields )){
+            logger.error( '_extend_by_fields() expects \'fields\' be an array, got', spec.fields, 'throwing...' );
+            throw new Error( 'Bad argument: fields' );
+        }
         let index = -1;
         if( spec.before ){
             index = this._index( spec.before );
-            assert( index >= 0, 'field not found: '+spec.before );
+            // field not found is warned, but let pass that
+            if( index < 0 ){
+                logger.warning( '_extend_by_fields() field \''+spec.before+'\' not found, ignoring' );
+            }
         }
         let added = this._fields( spec.fields );
         // inserting before a named field ?
@@ -50,12 +63,18 @@ export class Set {
     }
 
     // extend the set with another set
-    _extend_with_set( set, opts={} ){
-        assert( set instanceof Field.Set, 'expects an instance of Field.Set, got '+set );
+    _extend_by_set( set, opts={} ){
+        if( !set || !( set instanceof Field.Set )){
+            logger.error( '_extend_by_set() expects \'set\' be an instance of Field.Set, got', set, 'throwing...' );
+            throw new Error( 'Bad argument: set' );
+        }
         this.#set = this.#set || [];
         opts.rename = opts.rename || {};
         set.#set.forEach(( it ) => {
-            assert( it instanceof Field.Def, 'expects an instance of Field.Def, got '+it );
+            if( !it || !( it instanceof Field.Def )){
+                logger.error( '_extend_by_set() expects an instance of Field.Def, got', it, 'throwing...' );
+                throw new Error( 'Bad argument: it' );
+            }
             const name = it.name();
             const defn = _.cloneDeep( it.def());
             defn.name = opts.rename[name] || name;
@@ -75,7 +94,8 @@ export class Set {
                     } else if( _.isObject( it )){
                         result.push( new Def( it ));
                     } else {
-                        logger.warn( 'expect an array of an object, found', it );
+                        logger.error( '_fields() expects an object definition or an array of object definitions, got', it, 'throwing...' );
+                        throw new Error( 'Bad argument: it' );
                     }
                 }
             });
@@ -92,7 +112,10 @@ export class Set {
         let found = -1;
         for( let i=0 ; i<this.#set.length ; ++i ){
             const it = this.#set[i];
-            assert( it instanceof Def, 'expects a Def instance' )
+            if( !it || !( it instanceof Field.Def )){
+                logger.error( '_index() expects an instance of Field.Def, got', it, 'throwing...' );
+                throw new Error( 'Bad argument: it' );
+            }
             if( it.name() === name ){
                 found = i;
                 break;
@@ -115,7 +138,10 @@ export class Set {
      * @returns {Set} this instance
      */
     constructor( list ){
-        assert( !list || _.isObject( list ) || _.isArray( list ), 'when set, argument must be an array or an ordered list of plain javascript Object\'s' );
+        if( list &&  !_.isObject( list ) && !_.isArray( list )){
+            logger.error( 'Set.Set() expects an object definition or an array of object definitions, got', list, 'throwing...' );
+            throw new Error( 'Bad argument: list' );
+        }
 
         // keep instanciation args
         if( _.isArray( list )){
@@ -124,7 +150,7 @@ export class Set {
             this.#args = [ ...arguments ];
         }
 
-        // instanciate a Def object for each field description
+        // instanciate a Field.Def object for each field description
         // when an array is found, iterate inside this array (and recurse)
         this.#set = this._fields( this.#args );
 
@@ -140,7 +166,10 @@ export class Set {
     byName( name ){
         let found = null;
         this.#set.every(( it ) => {
-            assert( it instanceof Def, 'expects a Def instance' )
+            if( !it || !( it instanceof Field.Def )){
+                logger.error( 'byName() expects an instance of Field.Def, got', it, 'throwing...' );
+                throw new Error( 'Bad argument: it' );
+            }
             if( it.name() === name ){
                 found = it;
             }
@@ -157,7 +186,10 @@ export class Set {
     byPrefix( prefix='' ){
         let res = [];
         this.#set.forEach(( it ) => {
-            assert( it instanceof Def, 'expects a Def instance' )
+            if( !it || !( it instanceof Field.Def )){
+                logger.error( 'byPrefix() expects an instance of Field.Def, got', it, 'throwing...' );
+                throw new Error( 'Bad argument: it' );
+            }
             if( it.byPrefix( prefix )){
                 res.push( it );
             }
@@ -168,24 +200,23 @@ export class Set {
     /**
      * @locus Everywhere
      * @summary Extend the current Set with additional fields
-     * @param {Object|Array|Field.Set} extend the fields definitions or the field.set to be inserted
+     * @param {Object|Array|Field.Set} extend the fields definitions as an object { fields: [ ... ]|{ ... } [, before: <name> ]}, or an array of such objects, or a Field.Set to be inserted
      * @param {Object} opts an optional options object with following keys:
-     * - rename:
+     * - rename: rename a field - only honored if extend is a Field.Set
      */
     extend( extend, opts={} ){
-        // accept null or an empty object, or an empty array
+        // ignore (but warns) falsy, or an empty object, or an empty array
         if( !extend || ( ! extend instanceof Field.Set && ( _.isObject( extend ) && Object.keys( extend ).length === 0 ) || ( _.isArray( extend ) && extend.length === 0 ))){
+            logger.warning( 'extend() called with an empty \'extend\' argument' );
             return;
         }
-        assert( extend && ( _.isObject( extend ) || _.isArray( extend ) || extend instanceof Field.Set ), 'expect an object, or an array of objects or an instance of Field.Set, got '+extend );
         if( extend instanceof Field.Set ){
-            this._extend_with_set( extend, opts );
-
+            this._extend_by_set( extend, opts );
         } else {
             extend = _.isArray( extend ) ? extend : [ extend ];
             const self = this;
             extend.forEach(( it ) => {
-                self._extend( it );
+                self._extend_by_fields( it );
             });
         }
     };
@@ -252,11 +283,11 @@ export class Set {
         const columns = opts.columns || this.toTabular();
         if( !columns || !_.isArray( columns )){
             logger.error( 'tabularIndexByName() expect columns be an array, got', columns, 'throwing...' );
-            throw new Error( 'Bad data type' );
+            throw new Error( 'Bad argument: columns' );
         }
         if( !name || !_.isString( name )){
             logger.error( 'tabularIndexByName() expect name be a non-empty string, got', name, 'throwing...' );
-            throw new Error( 'Bad data type' );
+            throw new Error( 'Bad argument: name' );
         }
         for( let i=0 ; i<columns.length ; ++i ){
             if( columns[i].visible !== false ){

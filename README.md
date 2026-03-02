@@ -258,9 +258,9 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     Extends the `Field.Set` set with the provided fields definitions, as an object, or an array of objects, where each object has following keys:
 
-    - `before`: the optional column reference name to be inserted before, must be already defined.
+    - `before`: an optional column name to be inserted before, must be already defined.
 
-        If a column name is not specified, then the provided fields definitions are appended to the existing ones.
+        If a column name is not specified, or not found, or the key not specified at all, then the provided fields definitions are appended to the existing ones.
 
     - `fields`: an array of field definitions.
 
