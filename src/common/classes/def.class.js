@@ -172,7 +172,10 @@ export class Def {
         }
         // send the dt_ keys to the definition
         Object.keys( def ).forEach(( key ) => {
-            if( key !== 'name' && key !== 'dt_data' ){
+            if( key !== 'dt_data' ){
+                if( key === 'name' ){
+                    res.name = def.name;
+                }
                 if( key.startsWith( 'dt_' )){
                     let dtkey = key.substring( 3 );
                     if( dtkey === 'template' ){
