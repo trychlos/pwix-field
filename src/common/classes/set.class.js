@@ -239,6 +239,39 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @param {String} name the name of the searched field
+     * @param {Object} opts an optional options object with following keys:
+     *  - columns: a Tabular columns array where the name is to be searched, defaulting to the tabular columns as computed by toTabular() method
+     *  - only_visible: when true, returns the index among the visible columns only, defaulting to false (count every column)
+     * @returns {Integer} the index of the field in the tabular, or -1 if not found
+     */
+    tabularIndexByName( name, opts ){
+        opts = opts || {};
+        let found = -1;
+        let visible = -1;
+        const columns = opts.columns || this.toTabular();
+        if( !columns || !_.isArray( columns )){
+            logger.error( 'tabularIndexByName() expect columns be an array, got', columns, 'throwing...' );
+            throw new Error( 'Bad data type' );
+        }
+        if( !name || !_.isString( name )){
+            logger.error( 'tabularIndexByName() expect name be a non-empty string, got', name, 'throwing...' );
+            throw new Error( 'Bad data type' );
+        }
+        for( let i=0 ; i<columns.length ; ++i ){
+            if( columns[i].visible !== false ){
+                visible += 1;
+            }
+            if( columns[i].name === name ){
+                found = ( opts.only_visible === true ) ? visible : i;
+                break;
+            }
+        };
+        return found;
+    };
+
+    /**
+     * @locus Everywhere
      * @returns {Object} a Forms specification as an object where keys are the name of the fields, and values the Forms field definition
      */
     toForm(){

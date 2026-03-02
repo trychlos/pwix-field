@@ -278,6 +278,18 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     Returns the array of defined `name`'s.
 
+- `Field.Set.tabularIndexByName( name, opts )`
+
+    Returns the index inside of the tabular display of the named column, or -1.
+
+    Because the `name` key is optional when defining a field, then not all field's are retrievable by this method.
+
+    `opts` is an optional options object with following keys:
+
+    - `columns`, the tabular columns to be searched for, defaulting to the columns as returned by `toTabular()` method.
+
+    - `only_visible`, when set to `true`, returns an index based only on visible columns, defaulting to counting all columns.
+
 - `Field.Set.toForm()`
 
     Returns an ordered list of columns definitions suitable to [Forms](https://github.com/trychlos/pwix-forms/) setup.

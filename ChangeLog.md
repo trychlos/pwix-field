@@ -9,6 +9,7 @@
     - configure() now warns for unmanaged keys
     - Use pwix:logger universal logger, thus bumping minor candidate version number
     - Def.toTabular() now provides the name to the column if it is set
+    - Define new Set.tabularIndexByName() method
 
 ### 1.6.0
 
