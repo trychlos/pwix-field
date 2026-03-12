@@ -26,6 +26,8 @@
  * 'form_'-prefixed keys target the input panel (and more specifically `pwix:forms` package).
  *
  * 'help_'-prefixed keys may host help data for the field, e.g. a short help text, or a full help description.
+ *
+ * 'add_'-prefixed keys target additional features.
  */
 
 import _ from 'lodash';
@@ -148,6 +150,7 @@ export class Def {
                 key !== 'schema' &&
                 key !== 'tabular' && !key.startsWith( 'dt_' ) &&
                 key !== 'form' && !key.startsWith( 'form_' ) &&
+                                !key.startsWith( 'add_' ) &&
                 key !== 'help' && !key.startsWith( 'help_' ) &&
                 !Field.fn.haveConfiguredPrefix( key )){
                 
@@ -282,6 +285,64 @@ export class Def {
         });
         return found;
     }
+
+    /**
+     * @locus Everywhere
+     * @param {Object} item
+     * @returns {Object} a EJSON-comparable version of item
+     */
+    comparable( item ){
+        const name = this.name();
+        //if( name === 'keygrips.$' ) logger.debug( name, 'entering' );
+        // if no 'add_ejson()' function, then ignore
+        const defn = this._defn();
+        if( !defn.add_ejson ){
+            return item;
+        }
+        if( !_.isFunction( defn.add_ejson )){
+            logger.warning( 'comparable()', name, 'add_ejson() is not a function, got', defn.add_ejson );
+            return item;
+        }
+        // if the name dot-separated, then these are sub-documents
+        // if the name has one or more '.$.', then these are arrays
+        //  e.g. something like 'jwks.$.pair.key.$.algorithm'
+        const parts = name.split( '.' );
+        const _fnIter = function( local_item, local_parts ){
+            if( !local_item ){
+                return;
+            }
+            //if( name === 'keygrips.$' ) logger.debug( name, local_item, local_parts );
+            if( local_parts.length ){
+                const part = local_parts.shift();
+                if( local_parts.length ){
+                    if( part === '$' ){
+                        if( _.isArray( local_item )){
+                            const start_parts = _.cloneDeep( local_parts );
+                            for( let i=0 ; i<local_item.length ; ++i ){
+                                local_parts = _.cloneDeep( start_parts );
+                                _fnIter( local_item[i], local_parts );
+                            }
+                        } else {
+                            logger.warning( 'comparable() expects an array, got', local_item );
+                        }
+                    } else {
+                        _fnIter( local_item[part], local_parts );
+                    }
+                } else if( part === '$' ){
+                    // if a function is attached to '$' last part, then it applies to each and every item
+                    //local_item = defn.add_ejson( local_item );
+                    for( let i=0 ; i<( local_item || [] ).length ; ++i ){
+                        local_item[i] = defn.add_ejson( local_item[i] );
+                    }
+                } else {
+                    local_item[part] = defn.add_ejson( local_item[part] );
+                }
+            }
+        };
+        _fnIter( item, parts );
+        //if( name === 'keygrips.$' ) logger.debug( name, 'returning', item );
+        return item;
+    };
 
     /**
      * @locus Everywhere

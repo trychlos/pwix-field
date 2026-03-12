@@ -199,6 +199,22 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @param {Object} item
+     * @returns {Object} a EJSON-comparable version of item
+     */
+    comparable( item ){
+        let res = EJSON.clone( item || {} );
+        this.#set.forEach(( it ) => {
+            const name = it.name();
+            if( name ){
+                res = it.comparable( res );
+            }
+        });
+        return res;
+    };
+
+    /**
+     * @locus Everywhere
      * @summary Extend the current Set with additional fields
      * @param {Object|Array|Field.Set} extend the fields definitions as an object { fields: [ ... ]|{ ... } [, before: <name> ]}, or an array of such objects, or a Field.Set to be inserted
      * @param {Object} opts an optional options object with following keys:

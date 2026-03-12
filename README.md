@@ -4,15 +4,17 @@
 
 A package to manage field definitions in Meteor. You define here at once all specifications needed for both:
 
-- SimpleSchema definition, with `aldeed:simple-schema`
+- SimpleSchema definition, with `aldeed:simple-schema`,
 
-- Datatables display, with `aldeed:tabular`
+- Datatables display, with `aldeed:tabular` or `pwix:tabular` extension,
 
-- forms input, with `pwix:forms`
+- forms input, with `pwix:forms`,
 
-- getter, setter and both client and server sides checks
+- getter, setter and both client and server sides checks,
 
-- help lines.
+- help lines,
+
+- or additional features.
 
 ## Installation
 
@@ -62,9 +64,10 @@ The exported `Field` global object provides following items:
 
 A class which provides the ad-hoc definitions for (almost) every use of a field in an application, and in particular:
 
-- to a `SimpleSchema` collection schema through the `Field.ISchema` interface
-- to a [`Datatable`](https://datatables.net) tabular display
-- to the `Forms.Checker` class provided by `pwix:forms`
+- to a `SimpleSchema` collection schema through the `Field.ISchema` interface,
+- to a [`Datatable`](https://datatables.net) tabular display with `dt_`-prefixed keys,
+- to the `Forms.Checker` class provided by `pwix:forms` with `form_`-prefixed keys,
+- to compare two items with `comp_`-prefixed keys,
 - as a help memento with `help_`-prefixed keys.
 
 A `Field.Def` is instanciated with an object with some specific keys, depending of the target usage:
@@ -114,6 +117,12 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
     All `Forms.Checker` keys must be passed with a `form_` prefix. All fields are considered unless a `form: false` is specified.
 
     See `pwix:forms` documentation for the list of available keys.
+
+- Additional features
+
+    When it is needed to compare two objects, we may need to translate some data format to some comparable value.
+
+    While default is to EJSON.clone() each and every data, any fields can provide a `add_ejson()` function to replace this former.
 
 ###### Methods
 
@@ -252,7 +261,11 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 
     Returns the list of `Field.Def` objects which contains at least one key which starts by the given prefix, or an empty array.
 
-    `prefix` defaults to abn empty string, which means all fields.
+    `prefix` defaults to an empty string, which means all fields.
+
+- `Field.Set.comparable( item )`
+
+    Returns an EJSON-comparable version of the provided item.
 
 - `Field.Set.extend( <Array|Object|Field.Set> [, options<Object> ] )`
 

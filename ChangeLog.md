@@ -11,6 +11,7 @@
     - Def.toTabular() now provides the name to the column if it is set
     - Define new Set.tabularIndexByName() method
     - Replace assertions with logger.error() + exception throw
+    - Define new Field.Set.comparable(), Field.Def.comparable() methods
 
 ### 1.6.0
 
