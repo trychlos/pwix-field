@@ -129,7 +129,7 @@ export class Set {
     // public data
 
     /**
-     * Constructor
+     * @constructor
      * @locus Everywhere
      * @summary Instanciates a new Set instance
      * @param {List<Object>|Array<Object>} list a list of field definitions
@@ -364,14 +364,17 @@ export class Set {
 
     /**
      * @locus Everywhere
+     * @param {Array} names an optional list of the names to extract, defaulting to all
      * @returns {Array<Object>} the array of datatable column definitions
      */
-    toTabular(){
+    toTabular( names ){
         let result = [];
         this.#set.forEach(( def ) => {
-            const res = def.toTabular();
-            if( res ){
-                result.push( res );
+            if( !names || names.includes( def.name())){
+                const res = def.toTabular();
+                if( res ){
+                    result.push( res );
+                }
             }
         });
         return result;

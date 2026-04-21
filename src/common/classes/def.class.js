@@ -218,8 +218,10 @@ export class Def {
                 return o;
             };
         }
-        // provide the field type (Boolean, etc.) to the definition
-        res.dt_type = def.type;
+        // provide the field type (Boolean, etc.) to the definition unless we have found a dt_type
+        if( !res.type ){
+            res.type = def.type;
+        }
         return res;
     }
 
@@ -251,7 +253,7 @@ export class Def {
     // public data
 
     /**
-     * Constructor
+     * @constructor
      * @locus Everywhere
      * @param {Object} o the field definition provided by the application
      * @returns {Field} this instance
