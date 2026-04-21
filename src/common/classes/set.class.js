@@ -364,17 +364,19 @@ export class Set {
 
     /**
      * @locus Everywhere
-     * @param {Array} names an optional list of the names to extract, defaulting to all
+     * @param {Array} visibleNames an optional list of the names to be made visible, defaulting to only relying on the definitions
      * @returns {Array<Object>} the array of datatable column definitions
      */
-    toTabular( names ){
+    toTabular( visibleNames ){
         let result = [];
+        const setNames = this.names();
         this.#set.forEach(( def ) => {
-            if( !names || names.includes( def.name())){
-                const res = def.toTabular();
-                if( res ){
-                    result.push( res );
+            const res = def.toTabular( setNames );
+            if( res ){
+                if( visibleNames ){
+                    res.visible = visibleNames.includes( def.name());
                 }
+                result.push( res );
             }
         });
         return result;

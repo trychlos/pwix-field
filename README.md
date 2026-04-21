@@ -106,11 +106,19 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
         A named field defaults to be subscribed to by a tabular display. This option prevents to have a useless data subscription.
 
+    - `dt_hidden`
+
+        Whether the column must be part of the tabular fieldset, but hidden from the display, defaulting to false.
+        
+        This is notably used for data which must be present but not displayable.
+
     - `dt_template`
 
     - `dt_templateContext`
 
         Replace the `tmpl` and `tmplContext` defined by `aldeed:tabular` with same mean and usage.
+
+    Tabular display defaults to display _terminal_ names only, e.g. `emails.$.address` is considered displayable, while `emails` and `emails.$` are not. All non terminal names are still transferred to the tabular display, and marked as **non visible**. In other words, all the field set is available to the tabular, only terminal names being visible.
 
 - Forms usage
 

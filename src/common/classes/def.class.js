@@ -177,6 +177,7 @@ export class Def {
      *  - must participate to the schema
      *  - data subscription is named along the 'dt_data' key or the 'name' key, unless dt_data=false
      *  - all 'dt_' keys are provided (minus this prefix)
+     *  - if a field is 'dt_hidden', then we set 'dt_visible=false'
      */
     _tabularDefinition(){
         if( !this._tabularParticipate()){
@@ -205,6 +206,10 @@ export class Def {
                         dtkey = 'tmplContext';
                     }
                     res[dtkey] = def[key];
+                    // if hidden, then not visible
+                    if( dtkey === 'hidden' && def[key]){
+                        res.visible = false;
+                    }
                 }
             }
         });
@@ -228,7 +233,7 @@ export class Def {
     /*
      * @returns {Boolean} whether the field definition has any 'dt_' key
      */
-    _tabularHaveKey( def ){
+    _tabularHaveDtKey( def ){
         let have_dtkey = false;
         Object.keys( def ).every(( key ) => {
             have_dtkey = key.startsWith( 'dt_' );
@@ -241,13 +246,31 @@ export class Def {
      * @returns {Boolean} whether this field definition participates to a tabular display
      * @rules
      *  - must not have a 'tabular=false' key
-     *  - must have either a 'name', which will be transformed to a 'data' which is used to subscribe to the collection, and which must not be an object (doesn't end in '.$')
-     *    or any 'dt_'-prefixed key
+     *  - must have:
+     *      > either a terminal 'name', which will be transformed to a 'data' which is used to subscribe to the collection,
+     *      > either a 'name', which will be transformed to a 'data' which is used to subscribe to the collection, and which must not be an object (doesn't end in '.$')
+     *      > or any 'dt_'-prefixed key
      */
-    _tabularParticipate(){
+    _tabularParticipate( names ){
         const def = this._defn();
         const name = this.name();
-        return def.tabular !== false && (( name && !name.match( /\.\$$/ )) || this._tabularHaveKey( def ));
+        if( def.tabular === false ){
+            return false;
+        }
+        if( this._tabularHaveDtKey( def )){
+            return true;
+        }
+        if( !name ){
+            return false;
+        }
+        // do we have a terminal name ? no if any other name starts with '<name>.'
+        const str = name + '.';
+        for( const it of names ){
+            if( it.startsWith( str )){
+                return false;
+            }
+        }
+        return true;
     }
 
     // public data
@@ -408,11 +431,12 @@ export class Def {
 
     /**
      * @locus Everywhere
+     * @param {Array} names an optional list of the set names
      * @returns {Object} the datatable column definition, or null
      */
-    toTabular(){
+    toTabular( names ){
         let res = null;
-        if( this._tabularParticipate()){
+        if( this._tabularParticipate( names )){
             res = this._tabularDefinition();
         }
         return res;

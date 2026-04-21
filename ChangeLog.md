@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - Set.toTabular() accepts an optional list of names to be made visible
+    - Set toTabular() accepts an optional list of names to be made visible
     - Introduce 'dt_hidden' parameter
 
 ### 1.7.0
