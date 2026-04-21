@@ -92,6 +92,8 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
     Tabular display is managed through [`Datatable`](https://datatables.net).
 
+    Tabular columns require that each field be named. Without a name, the field definition is just ignored from Tabular point of view.
+
     The `Field.Def` definitions are used to build the `columns` definition argument at `Tabular.Table` instanciation time. All arguments accepted in this `columns` definition can be provided here, with a `dt_` prefix, plus following keys:
 
     - `tabular`
@@ -110,7 +112,7 @@ A `Field.Def` is instanciated with an object with some specific keys, depending 
 
         Whether the column must be part of the tabular fieldset, but hidden from the display, defaulting to false.
         
-        This is notably used for data which must be present but not displayable.
+        This is notably used for terminal data which must be present but not displayable.
 
     - `dt_template`
 
@@ -298,18 +300,6 @@ Both all fields of a Mongo document, all columns of a tabular display based on t
 - `Field.Set.names()`
 
     Returns the array of defined `name`'s.
-
-- `Field.Set.tabularIndexByName( name, opts )`
-
-    Returns the index inside of the tabular display of the named column, or -1.
-
-    Because the `name` key is optional when defining a field, then not all field's are retrievable by this method.
-
-    `opts` is an optional options object with following keys:
-
-    - `columns`, the tabular columns to be searched for, defaulting to the columns as returned by `toTabular()` method.
-
-    - `only_visible`, when set to `true`, returns an index based only on visible columns, defaulting to counting all columns.
 
 - `Field.Set.toForm()`
 

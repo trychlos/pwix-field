@@ -2,12 +2,13 @@
 
 ## ChangeLog
 
-### 1.7.1-rc.0
+### 1.8.0-rc.0
 
     Release date: 
 
-    - Set toTabular() accepts an optional list of names to be made visible
     - Introduce 'dt_hidden' parameter
+    - Make sure all tabular fields are named
+    - Deprecate Set.tabularIndexByName() and Set.indexByName() in favor of Tabular.indexMap() function
 
 ### 1.7.0
 

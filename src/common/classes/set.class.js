@@ -243,14 +243,8 @@ export class Set {
      * @returns {Integer} the index of the field in the set, or -1 if not found
      */
     indexByName( name ){
-        let found = -1;
-        for( let i=0 ; i<this.#set.length ; ++i ){
-            if( this.#set[i].name() === name ){
-                found = i;
-                break;
-            }
-        };
-        return found;
+        logger.warning( 'Set.indexByName() is deprecated starting with v1.8 in favor of Tabular.indexMap(). You should update your code' );
+        return -1;
     }
 
     /**
@@ -283,39 +277,6 @@ export class Set {
         this.#set = newSet;
         return this.#set;
     }
-
-    /**
-     * @locus Everywhere
-     * @param {String} name the name of the searched field
-     * @param {Object} opts an optional options object with following keys:
-     *  - columns: a Tabular columns array where the name is to be searched, defaulting to the tabular columns as computed by toTabular() method
-     *  - only_visible: when true, returns the index among the visible columns only, defaulting to false (count every column)
-     * @returns {Integer} the index of the field in the tabular, or -1 if not found
-     */
-    tabularIndexByName( name, opts ){
-        opts = opts || {};
-        let found = -1;
-        let visible = -1;
-        const columns = opts.columns || this.toTabular();
-        if( !columns || !_.isArray( columns )){
-            logger.error( 'tabularIndexByName() expect columns be an array, got', columns, 'throwing...' );
-            throw new Error( 'Bad argument: columns' );
-        }
-        if( !name || !_.isString( name )){
-            logger.error( 'tabularIndexByName() expect name be a non-empty string, got', name, 'throwing...' );
-            throw new Error( 'Bad argument: name' );
-        }
-        for( let i=0 ; i<columns.length ; ++i ){
-            if( columns[i].visible !== false ){
-                visible += 1;
-            }
-            if( columns[i].name === name ){
-                found = ( opts.only_visible === true ) ? visible : i;
-                break;
-            }
-        };
-        return found;
-    };
 
     /**
      * @locus Everywhere
@@ -364,18 +325,14 @@ export class Set {
 
     /**
      * @locus Everywhere
-     * @param {Array} visibleNames an optional list of the names to be made visible, defaulting to only relying on the definitions
      * @returns {Array<Object>} the array of datatable column definitions
      */
-    toTabular( visibleNames ){
+    toTabular(){
         let result = [];
         const setNames = this.names();
         this.#set.forEach(( def ) => {
             const res = def.toTabular( setNames );
             if( res ){
-                if( visibleNames ){
-                    res.visible = visibleNames.includes( def.name());
-                }
                 result.push( res );
             }
         });

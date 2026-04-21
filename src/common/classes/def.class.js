@@ -245,6 +245,7 @@ export class Def {
     /*
      * @returns {Boolean} whether this field definition participates to a tabular display
      * @rules
+     *  - must have a non empty name
      *  - must not have a 'tabular=false' key
      *  - must have:
      *      > either a terminal 'name', which will be transformed to a 'data' which is used to subscribe to the collection,
@@ -254,14 +255,14 @@ export class Def {
     _tabularParticipate( names ){
         const def = this._defn();
         const name = this.name();
+        if( !name ){
+            return false;
+        }
         if( def.tabular === false ){
             return false;
         }
         if( this._tabularHaveDtKey( def )){
             return true;
-        }
-        if( !name ){
-            return false;
         }
         // do we have a terminal name ? no if any other name starts with '<name>.'
         const str = name + '.';
