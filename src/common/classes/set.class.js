@@ -176,7 +176,7 @@ export class Set {
             return found === null;
         });
         return found;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -211,7 +211,7 @@ export class Set {
             }
         });
         return res;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -235,7 +235,7 @@ export class Set {
                 self._extend_by_fields( it );
             });
         }
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -251,7 +251,7 @@ export class Set {
             }
         };
         return found;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -266,7 +266,7 @@ export class Set {
             }
         });
         return names;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -282,7 +282,7 @@ export class Set {
         });
         this.#set = newSet;
         return this.#set;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -330,7 +330,7 @@ export class Set {
             }
         })
         return result;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -345,7 +345,7 @@ export class Set {
             }
         })
         return result;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -360,7 +360,7 @@ export class Set {
             }
         })
         return result;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -380,5 +380,5 @@ export class Set {
             }
         });
         return result;
-    };
+    }
 }

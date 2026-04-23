@@ -367,7 +367,7 @@ export class Def {
         _fnIter( item, parts );
         //if( name === 'keygrips.$' ) logger.debug( name, 'returning', item );
         return item;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -403,7 +403,7 @@ export class Def {
             res = this._formDefinition();
         }
         return res;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -415,7 +415,7 @@ export class Def {
             res = this._helpDefinition();
         }
         return res;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -427,7 +427,7 @@ export class Def {
             res = this._schemaDefinition();
         }
         return res;
-    };
+    }
 
     /**
      * @locus Everywhere
@@ -440,5 +440,5 @@ export class Def {
             res = this._tabularDefinition();
         }
         return res;
-    };
+    }
 }
