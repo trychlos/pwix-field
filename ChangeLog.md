@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.8.0-rc.0
+### 1.8.0
 
-    Release date: 
+    Release date: 2026- 4-23
 
     - Introduce 'dt_hidden' parameter
     - Make sure all tabular fields are named
@@ -84,4 +84,4 @@
 
 ---
 P. Wieser
-- Last updated on 2026, Apr. 2nd
+- Last updated on 2026, Apr. 23rd
