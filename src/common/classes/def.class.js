@@ -172,6 +172,8 @@ export class Def {
     }
 
     /*
+     * @param {Array} the list of all names of the set
+     *  Let us determinate if the current name is a record (i.e. has subkeys) or is terminal
      * @returns {Object} the datatable column definition
      * @rules
      *  - must participate to the schema
@@ -179,8 +181,8 @@ export class Def {
      *  - all 'dt_' keys are provided (minus this prefix)
      *  - if a field is 'dt_hidden', then we set 'dt_visible=false'
      */
-    _tabularDefinition(){
-        if( !this._tabularParticipate()){
+    _tabularDefinition( names ){
+        if( !this._tabularParticipate( names )){
             logger.error( '_tabularDefinition() field is not defined to participate to a DataTables tabular display, and you should have checked that before', 'throwing...' );
             throw new Error( 'Missing check' );
         }
@@ -243,6 +245,8 @@ export class Def {
     }
 
     /*
+     * @param {Array} the list of all names of the set
+     *  Let us determinate if the current name is a record (i.e. has subkeys) or is terminal
      * @returns {Boolean} whether this field definition participates to a tabular display
      * @rules
      *  - must have a non empty name
@@ -438,7 +442,7 @@ export class Def {
     toTabular( names ){
         let res = null;
         if( this._tabularParticipate( names )){
-            res = this._tabularDefinition();
+            res = this._tabularDefinition( names );
         }
         return res;
     }

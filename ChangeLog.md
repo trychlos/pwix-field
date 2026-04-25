@@ -6,7 +6,7 @@
 
     Release date: 
 
-    - 
+    - Fix toTabular() to hold the names of the set
 
 ### 1.8.0
 
