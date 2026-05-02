@@ -2,9 +2,9 @@
 
 ## ChangeLog
 
-### 1.8.1-rc.0
+### 1.8.1
 
-    Release date: 
+    Release date: 2026- 5- 2
 
     - Fix toTabular() to hold the names of the set
 
@@ -90,4 +90,4 @@
 
 ---
 P. Wieser
-- Last updated on 2026, Apr. 23rd
+- Last updated on 2026, May. 2nd
